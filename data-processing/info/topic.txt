@@ -4566,3 +4566,9 @@
 568 medical-records
 568 openmrs
 568 openmrs-community
+569 ik-analysis
+569 ik-analyzer
+569 java
+569 lucene
+569 solr
+569 solrcloud
