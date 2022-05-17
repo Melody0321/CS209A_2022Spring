@@ -566,3 +566,4 @@ zalando/intellij-swagger https://github.com/zalando/intellij-swagger 1110 40 33 
 apache/opennlp https://github.com/apache/opennlp 1108 10 93 398
 SpongePowered/SpongeAPI https://github.com/SpongePowered/SpongeAPI 1100 159 101 354
 openmrs/openmrs-core https://github.com/openmrs/openmrs-core 1097 54 138 3058
+magese/ik-analyzer-solr https://github.com/magese/ik-analyzer-solr 1094 12 28 158
