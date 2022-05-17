@@ -11,8 +11,8 @@ create table project
 
 create table project_time(
     project_id int not null ,
-    create_time time not null ,
-    update_time time not null ,
+    create_time timestamp not null ,
+    update_time timestamp not null ,
     foreign key (project_id)references project(id)
 );
 
