@@ -13,10 +13,16 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-    
+
     @GetMapping("/record")
     public List<Project> findAll(){
         System.out.println(projectService.getClass().getName());
         return projectService.findAll();
+    }
+
+    @GetMapping("/name/{tag}")
+    public List<Project> findByProjectInfo(String name, String tag){
+        System.out.println(projectService.getClass().getName());
+        return projectService.findByProjectInfo(name,tag);
     }
 }
