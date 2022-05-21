@@ -25,4 +25,11 @@ public class ProjectController {
         System.out.println(projectService.getClass().getName());
         return projectService.findByProjectInfo(name,tag);
     }
+    @GetMapping("/info")
+    public List<Project> findByProjectInfo(@RequestParam String name,
+                                           @RequestParam String tag){
+        System.out.println(projectService.getClass().getName());
+        System.out.println("info function called.");
+        return projectService.findByProjectInfo(name,tag);
+    }
 }
