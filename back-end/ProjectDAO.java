@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 public interface ProjectDAO extends JpaRepository<Project, Long> {
     List<Project> findAll();
+    List<Project> findTop8ByOrderById();
     @Query(value="with a as(select distinct project_id as id from project_topic\n" +
             "where topic like '%an%'\n" +
             "union\n" +
