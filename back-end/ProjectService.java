@@ -10,8 +10,11 @@ import java.util.Objects;
 public class ProjectService {
     @Autowired
     ProjectDAO projectDAO;
-    public List<Project> findAll(){
-        return projectDAO.findAll();
+//    public List<Project> findAll(){
+//        return projectDAO.findAll();
+//    }
+    public List<Project> findTop8(){
+        return projectDAO.findTop8ByOrderById();
     }
     public List<Project> findByProjectInfo(String name, String tag){
         String realName="%";
