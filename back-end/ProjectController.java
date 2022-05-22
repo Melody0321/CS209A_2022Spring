@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.pojo.Goods;
 import com.example.demo.pojo.Project;
 import com.example.demo.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,18 +14,18 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/record")
-    public List<Project> findAll(){
-        System.out.println(projectService.getClass().getName());
-        return projectService.findAll();
-    }
+//    @GetMapping("/record")
+//    public List<Project> findAll(){
+//        System.out.println(projectService.getClass().getName());
+//        return projectService.findAll();
+//    }
 
-//     @GetMapping("/name/{tag}")
+    //     @GetMapping("/name/{tag}")
 //     public List<Project> findByProjectInfo(String name, String tag){
 //         System.out.println(projectService.getClass().getName());
 //         return projectService.findByProjectInfo(name,tag);
 //     }
-   @GetMapping("/projectTop8")
+    @GetMapping("/projectTop8")
     public List<Project> findTop8(){
         System.out.println("top 8 call");
         List<Project> result = projectService.findTop8();
