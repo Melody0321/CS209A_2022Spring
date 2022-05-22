@@ -20,12 +20,20 @@ public class ProjectController {
         return projectService.findAll();
     }
 
-    @GetMapping("/name/{tag}")
-    public List<Project> findByProjectInfo(String name, String tag){
-        System.out.println(projectService.getClass().getName());
-        return projectService.findByProjectInfo(name,tag);
+//     @GetMapping("/name/{tag}")
+//     public List<Project> findByProjectInfo(String name, String tag){
+//         System.out.println(projectService.getClass().getName());
+//         return projectService.findByProjectInfo(name,tag);
+//     }
+   @GetMapping("/projectTop8")
+    public List<Project> findTop8(){
+        System.out.println("top 8 call");
+        List<Project> result = projectService.findTop8();
+        System.out.println(result);
+        return result;
     }
-    @GetMapping("/info")
+
+    @GetMapping("/projectInfo")
     public List<Project> findByProjectInfo(@RequestParam String name,
                                            @RequestParam String tag){
         System.out.println(projectService.getClass().getName());
