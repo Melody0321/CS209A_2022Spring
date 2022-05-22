@@ -40,25 +40,33 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">
-        </el-image>
-        <div style="position: relative;font-size: 25px;font-weight: bold;top: 10px">Recommend project：</div>
-        <div style="position: relative;top: 10px;left:20px;">
-          <el-row>
-            <el-col :span="4" v-for="(item, index) in recommend" :key="item.id" :offset="1">
-              <el-card shadow="hover" style="width: 230px;height: 220px;" @click.native="checkDetails(item)">
-                <div style="padding: 10px;height: 310px;">
+                <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">
+                </el-image>
 
-                  <div>Name: {{ item.name }}</div>
-                  <br>
-                  <br>
-                  <div>star: {{ item.star }}</div>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
+        <div>
+          <el-button @click="drawChart">Star</el-button>
+          <div id="chartLineBox" style="width: 90%;height: 70vh;">
+          </div>
         </div>
+
+        <!--        <div style="position: relative;font-size: 25px;font-weight: bold;top: 10px">Recommend project：</div>-->
+        <!--        <div style="position: relative;top: 10px;left:20px;">-->
+        <!--          <el-row>-->
+        <!--            <el-col :span="4" v-for="(item, index) in recommend" :key="item.id" :offset="1">-->
+        <!--              <el-card shadow="hover" style="width: 230px;height: 220px;" @click.native="checkDetails(item)">-->
+        <!--                <div style="padding: 10px;height: 310px;">-->
+
+        <!--                  <div>Name: {{ item.name }}</div>-->
+        <!--                  <br>-->
+        <!--                  <br>-->
+        <!--                  <div>star: {{ item.star }}</div>-->
+        <!--                </div>-->
+        <!--              </el-card>-->
+        <!--            </el-col>-->
+        <!--          </el-row>-->
+        <!--        </div>-->
       </el-main>
+
 
     </el-container>
   </div>
@@ -68,11 +76,13 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
+import * as echarts from 'echarts';
 
 export default {
   name: 'home',
   data() {
     return {
+      starVisible: false,
       localImage: require("../assets/home.jpg"),
       searchValue: '',
       passwordVisible: false,
@@ -104,7 +114,106 @@ export default {
       this.recommend = res.data;
     })
   },
+
   methods: {
+    drawChart() {
+      this.starVisible = true;
+      this.chartLine = echarts.init(document.getElementById('chartLineBox'));
+
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {              //设置tip提示
+          trigger: 'axis'
+        },
+
+        legend: {               //设置区分（哪条线属于什么）
+          data: ['Number of new projects', 'Total number']
+        },
+        color: ['#8AE09F', '#FA6F53'],       //设置区分（每条线是什么颜色，和 legend 一一对应）
+        xAxis: {                //设置x轴
+          type: 'category',
+          boundaryGap: false,     //坐标轴两边不留白
+          data: ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
+          name: 'DATE',           //X轴 name
+          nameTextStyle: {        //坐标轴名称的文字样式
+            color: '#FA6F53',
+            fontSize: 16,
+            padding: [0, 0, 0, 20]
+          },
+          axisLine: {             //坐标轴轴线相关设置。
+            lineStyle: {
+              color: '#FA6F53',
+            }
+          }
+        },
+        yAxis: {
+          name: 'Number',
+          nameTextStyle: {
+            color: '#FA6F53',
+            fontSize: 16,
+            padding: [0, 0, 10, 0]
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#FA6F53',
+            }
+          },
+          type: 'value'
+        },
+        series: [
+          {
+            name: 'Number of new projects',
+            data: [20,
+              27,
+              69,
+              76,
+              101,
+              161,
+              158,
+              116,
+              110,
+              78,
+              48,
+              38,
+              15,
+              3],
+
+            type: 'line',               // 类型为折线图
+            lineStyle: {                // 线条样式 => 必须使用normal属性
+              normal: {
+                color: '#8AE09F',
+              }
+            },
+          },
+          {
+            name: 'Total number',
+            data: [20,
+              47,
+              116,
+              192,
+              293,
+              454,
+              612,
+              728,
+              838,
+              916,
+              964,
+              1002,
+              1017,
+              1020],
+            type: 'line',
+            lineStyle: {
+              normal: {
+                color: '#FA6F53',
+              }
+            },
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+      this.chartLine.setOption(option)
+    },
     checkDetails(item) {
       this.$router.push({
         name: 'Detail', query: {
@@ -153,7 +262,9 @@ export default {
   },
   mounted() {
     this.searchItems = this.loadAll();
-  }
+  },
+
+
 }
 </script>
 
