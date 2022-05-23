@@ -33,7 +33,8 @@
         background-color="white"
         text-color="#222"
         active-text-color="red">
-        <span style="font-size: 18px;font-weight: bold">Recommend</span>
+        <br>
+        <br>
         <el-menu-item @click.native="searchTag(item)" v-for="(item,i) in tagList" :key="i" >
           {{ item.tagItem }}
         </el-menu-item>
@@ -86,8 +87,7 @@ export default {
       p2: 'http://p.moimg.net/project/project_20180502_1525258786_7271.jpg?imageMogr2/auto-orient/strip',
       navList: [
         {name: '/home', navItem: 'Home'},
-        {name: '/collection', navItem: 'Collection'},
-        // {name: '/personal', navItem: '个人中心'}
+        {name: '/collection', navItem: 'Collection'}
       ],
       searchItems: [],
       state2: '',
