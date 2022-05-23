@@ -159,8 +159,8 @@ export default {
         xAxis: {                //设置x轴
           type: 'category',
           boundaryGap: false,     //坐标轴两边不留白
-          data: ['<10', '10-20', '20-50', '50-100', '100-200', '200-500',  '>=500'],
-          name: 'Issues',           //X轴 name
+          data: ['<200', '200-400', '400-600', '600-800', '800-1000', '1000-2000',  '>=2000'],
+          name: 'Forks',           //X轴 name
           nameTextStyle: {        //坐标轴名称的文字样式
             color: 'black',
             fontSize: 16,
@@ -191,13 +191,13 @@ export default {
 
           {
             name: '# of Projects',
-            data: [243,///<10
-              137,///10-20
-              216,///20-50
-              154,///50-100
-              131,
-              91,///200-500
-              48],
+            data: [257,///0-200
+              293,
+              148,
+              77,
+              55,
+              112,///1000-2000
+              78],
             type: 'line',
             lineStyle: {
               normal: {
