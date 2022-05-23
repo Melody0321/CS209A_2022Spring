@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class TopicDTO {
-    private long project_id;
+    private int id;
+    private int project_id;
     private String topic;
 }
