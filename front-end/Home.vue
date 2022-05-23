@@ -40,20 +40,20 @@
         </el-menu>
       </el-aside>
       <el-main>
-<!--                <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">-->
-<!--                </el-image>-->
+        <!--                <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">-->
+        <!--                </el-image>-->
 
         <div>
-<!--          <el-tabs v-model="activeName">-->
-<!--            <el-tab-pane label="Projects & Created Time" name="first" @click="drawChart">-->
-<!--              <div id="chartLineBox" style="width: 90%;height: 70vh;">-->
-<!--              </div>-->
-<!--            </el-tab-pane>-->
-<!--            <el-tab-pane label="Number of Stars" name="second">Number of Stars</el-tab-pane>-->
-<!--            <el-tab-pane label="Number of Issues" name="third">Number of Issues</el-tab-pane>-->
-<!--            <el-tab-pane label="Number of Forks" name="fourth">Number of Forks</el-tab-pane>-->
-<!--            <el-tab-pane label="Project Topics" name="fifth">Project Topics</el-tab-pane>-->
-<!--          </el-tabs>-->
+          <!--          <el-tabs v-model="activeName">-->
+          <!--            <el-tab-pane label="Projects & Created Time" name="first" @click="drawChart">-->
+          <!--              <div id="chartLineBox" style="width: 90%;height: 70vh;">-->
+          <!--              </div>-->
+          <!--            </el-tab-pane>-->
+          <!--            <el-tab-pane label="Number of Stars" name="second">Number of Stars</el-tab-pane>-->
+          <!--            <el-tab-pane label="Number of Issues" name="third">Number of Issues</el-tab-pane>-->
+          <!--            <el-tab-pane label="Number of Forks" name="fourth">Number of Forks</el-tab-pane>-->
+          <!--            <el-tab-pane label="Project Topics" name="fifth">Project Topics</el-tab-pane>-->
+          <!--          </el-tabs>-->
           <el-button @click="drawChart">Projects & Created Time</el-button>
           &nbsp;&nbsp;&nbsp;
           <el-button @click="drawStars">Number of Stars</el-button>
@@ -62,34 +62,15 @@
           &nbsp;&nbsp;&nbsp;
           <el-button @click="drawForks">Number of Forks</el-button>
           &nbsp;&nbsp;&nbsp;
-          <el-button @click="drawTopics">Project Topics</el-button><!--          词云-->
+<!--          <el-button @click="drawTopics">Project Topics</el-button>&lt;!&ndash;          词云&ndash;&gt;-->
 
 
           <br>
           <br>
           <div id="chartLineBox" style="width: 90%;height: 70vh;">
-
           </div>
-<!--          <div id="chartLineBox1" style="width: 90%;height: 70vh;">-->
-<!--            </div>-->
+            <div id="mywordcloud" :style="{width: '100%', height: '300px'}"></div>
         </div>
-
-        <!--        <div style="position: relative;font-size: 25px;font-weight: bold;top: 10px">Recommend project：</div>-->
-        <!--        <div style="position: relative;top: 10px;left:20px;">-->
-        <!--          <el-row>-->
-        <!--            <el-col :span="4" v-for="(item, index) in recommend" :key="item.id" :offset="1">-->
-        <!--              <el-card shadow="hover" style="width: 230px;height: 220px;" @click.native="checkDetails(item)">-->
-        <!--                <div style="padding: 10px;height: 310px;">-->
-
-        <!--                  <div>Name: {{ item.name }}</div>-->
-        <!--                  <br>-->
-        <!--                  <br>-->
-        <!--                  <div>star: {{ item.star }}</div>-->
-        <!--                </div>-->
-        <!--              </el-card>-->
-        <!--            </el-col>-->
-        <!--          </el-row>-->
-        <!--        </div>-->
       </el-main>
 
 
@@ -100,14 +81,17 @@
 
 <script>
 import axios from "axios";
-import Vue from "vue";
 import * as echarts from 'echarts';
-
+import "echarts-wordcloud/dist/echarts-wordcloud";
+import "echarts-wordcloud/dist/echarts-wordcloud.min";
+import data from "../assets/1.json";
 export default {
   name: 'home',
   data() {
     return {
-      activeName:'first',
+      chart:null,
+      worddata:[],
+      activeName: 'first',
       starVisible: false,
       localImage: require("../assets/home.jpg"),
       searchValue: '',
@@ -117,7 +101,6 @@ export default {
       navList: [
         {name: '/home', navItem: 'Home'},
         {name: '/collection', navItem: 'Collection'},
-        // {name: '/personal', navItem: '个人中心'}
       ],
       searchItems: [],
       state2: '',
@@ -139,10 +122,74 @@ export default {
     axios.get('http://localhost:8443/projectTop8').then(res => {
       this.recommend = res.data;
     })
+
+
   },
 
   methods: {
+    drawTopics(){
+      var worddata=JSON.parse(JSON.stringify(data))
+      // this.$axios.get('../assets/data.json').then(res=>{
+      //   console.log(res)
+      //   worddata=res.data
+      // }).catch(
+      //   alert('fail')
+      // )
+      console.log(worddata);
+      this.chart = echarts.init(document.getElementById("mywordcloud"));
+      const option={
+        series: [
+          {
+            type: "wordCloud",
+            //用来调整词之间的距离
+            gridSize: 10,
+            //用来调整字的大小范围
+            // Text size range which the value in data will be mapped to.
+            // Default to have minimum 12px and maximum 60px size.
+            sizeRange: [14, 60],
+            // Text rotation range and step in degree. Text will be rotated randomly in range [-90,                                                                             90] by rotationStep 45
+            //用来调整词的旋转方向，，[0,0]--代表着没有角度，也就是词为水平方向，需要设置角度参考注释内容
+            // rotationRange: [-45, 0, 45, 90],
+            // rotationRange: [ 0,90],
+            rotationRange: [0, 0],
+            //随机生成字体颜色
+            // maskImage: maskImage,
+            textStyle: {
+              normal: {
+                color: function() {
+                  return (
+                    "rgb(" +
+                    Math.round(Math.random() * 255) +
+                    ", " +
+                    Math.round(Math.random() * 255) +
+                    ", " +
+                    Math.round(Math.random() * 255) +
+                    ")"
+                  );
+                }
+              }
+            },
+            //位置相关设置
+            // Folllowing left/top/width/height/right/bottom are used for positioning the word cloud
+            // Default to be put in the center and has 75% x 80% size.
+            left: "center",
+            top: "center",
+            right: null,
+            bottom: null,
+            width: "200%",
+            height: "200%",
+            //数据
+            data: worddata
+          }
+        ]
+
+      };
+      this.chart.setOption(option);
+      console.log(worddata)
+    },
+
     drawForks() {
+      this.drawTopics();
       this.chartLine = echarts.init(document.getElementById('chartLineBox'));
       this.chartLine.clear()
 
@@ -159,7 +206,7 @@ export default {
         xAxis: {                //设置x轴
           type: 'category',
           boundaryGap: false,     //坐标轴两边不留白
-          data: ['<200', '200-400', '400-600', '600-800', '800-1000', '1000-2000',  '>=2000'],
+          data: ['<200', '200-400', '400-600', '600-800', '800-1000', '1000-2000', '>=2000'],
           name: 'Forks',           //X轴 name
           nameTextStyle: {        //坐标轴名称的文字样式
             color: 'black',
@@ -213,6 +260,7 @@ export default {
       this.chartLine.setOption(option)
     },
     drawIssues() {
+      this.drawTopics();
       this.chartLine = echarts.init(document.getElementById('chartLineBox'));
       this.chartLine.clear()
 
@@ -229,7 +277,7 @@ export default {
         xAxis: {                //设置x轴
           type: 'category',
           boundaryGap: false,     //坐标轴两边不留白
-          data: ['<10', '10-20', '20-50', '50-100', '100-200', '200-500',  '>=500'],
+          data: ['<10', '10-20', '20-50', '50-100', '100-200', '200-500', '>=500'],
           name: 'Issues',           //X轴 name
           nameTextStyle: {        //坐标轴名称的文字样式
             color: 'black',
@@ -282,7 +330,8 @@ export default {
 
       this.chartLine.setOption(option)
     },
-    drawStars(){
+    drawStars() {
+      this.drawTopics();
       this.chartLine = echarts.init(document.getElementById('chartLineBox'));
 
       // 指定图表的配置项和数据
@@ -298,7 +347,7 @@ export default {
         xAxis: {                //设置x轴
           type: 'category',
           boundaryGap: false,     //坐标轴两边不留白
-          data: ['0-1000', '1000-2000', '2000-3000','3000-4000','4000-5000','5000-6000','6000-7000','7000-8000','8000-9000','9000-10000','>=10000'],
+          data: ['0-1000', '1000-2000', '2000-3000', '3000-4000', '4000-5000', '5000-6000', '6000-7000', '7000-8000', '8000-9000', '9000-10000', '>=10000'],
           name: 'Star',           //X轴 name
           nameTextStyle: {        //坐标轴名称的文字样式
             color: 'black',
@@ -362,6 +411,7 @@ export default {
       this.chartLine.setOption(option)
     },
     drawChart() {
+      this.drawTopics();
       this.starVisible = true;
       this.chartLine = echarts.init(document.getElementById('chartLineBox'));
       this.chartLine.clear()
@@ -509,6 +559,7 @@ export default {
   },
   mounted() {
     this.searchItems = this.loadAll();
+
   },
 
 
