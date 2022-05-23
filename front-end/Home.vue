@@ -84,8 +84,7 @@ export default {
       p1: 'https://img-u-3.51miz.com/Templet/00/19/52/19/195219_c3e8071348f03e0b00338825d8d4992d.jpg-0.jpg',
       p2: 'http://p.moimg.net/project/project_20180502_1525258786_7271.jpg?imageMogr2/auto-orient/strip',
       navList: [
-        {name: '/home', navItem: 'Home'},
-        {name: '/collection', navItem: 'Collection'}
+        {name: '/home', navItem: 'Home'}
       ],
       searchItems: [],
       state2: '',
