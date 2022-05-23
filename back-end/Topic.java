@@ -9,8 +9,10 @@ import javax.validation.constraints.NotNull;
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_id")
-    private long id;
+    @Column(name = "id")
+    private int id;
+    @NotNull
+    private int project_id;
     @NotNull
     private String topic;
 
@@ -25,6 +27,7 @@ public class Topic {
                 ", topic='" + topic + '\'' +
                 '}';
     }
-    public int getID(){ return (int) id;}
+    public int getId(){ return id;}
     public String getTopic(){ return topic;}
+    public int getProject_id(){return project_id;}
 }
