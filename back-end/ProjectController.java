@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.pojo.Project;
 import com.example.demo.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +13,19 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-//    @GetMapping("/record")
-//    public List<Project> findAll(){
-//        System.out.println(projectService.getClass().getName());
-//        return projectService.findAll();
-//    }
 
-    //     @GetMapping("/name/{tag}")
-//     public List<Project> findByProjectInfo(String name, String tag){
-//         System.out.println(projectService.getClass().getName());
-//         return projectService.findByProjectInfo(name,tag);
-//     }
     @GetMapping("/projectTop8")
     public List<Project> findTop8(){
         System.out.println("top 8 call");
-        List<Project> result = projectService.findTop8();
-        System.out.println(result);
-        return result;
+        return projectService.findTop8();
     }
 
     @GetMapping("/projectInfo")
     public List<Project> findByProjectInfo(@RequestParam String name,
-                                           @RequestParam String tag){
-        System.out.println(projectService.getClass().getName());
+                                           @RequestParam int sort){
         System.out.println("info function called.");
-        return projectService.findByProjectInfo(name,tag);
+        return projectService.findByProjectInfo(name,sort);
     }
+
+
 }
