@@ -13,66 +13,43 @@
         <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
           {{ item.navItem }}
         </el-menu-item>
-<!--        <el-dropdown style="position: absolute;padding-top: 10px;right: 3%">-->
-<!--          <span class="el-dropdown-link">-->
-<!--              <el-avatar-->
-<!--                :size="40"-->
-<!--                :src="headshot"-->
-<!--                align="center"-->
-<!--                style="border: darkgrey solid 1px"-->
-<!--              ></el-avatar>-->
-<!--            &lt;!&ndash;            <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>&ndash;&gt;-->
-<!--          </span>-->
-<!--          <el-dropdown-menu slot="dropdown">-->
-<!--            <el-dropdown-item @click.native="personalHomepage">个人中心</el-dropdown-item>-->
-<!--            <el-dropdown-item @click.native="passwordVisible=true">修改密码</el-dropdown-item>-->
-<!--            <el-dropdown-item @click.native="exit">退出登录</el-dropdown-item>-->
-<!--          </el-dropdown-menu>-->
-<!--        </el-dropdown>-->
-<!--        <el-autocomplete-->
-<!--          class="inline-input"-->
-<!--          v-model="searchValue"-->
-<!--          :fetch-suggestions="querySearch"-->
-<!--          placeholder="请输入内容"-->
-<!--          :trigger-on-focus="false"-->
-<!--          @select="handleSelect"-->
-<!--          prefix-icon="el-icon-search"-->
-<!--          size="medium"-->
-<!--          style="width: 300px;position: relative;margin-top: 12px"-->
-<!--        ></el-autocomplete>-->
         <el-input v-model="searchValue" placeholder="Key"
                   suffix-icon="el-icon-search"
                   size="medium"
                   style="width: 300px;position:absolute;right: 20%;margin-top: 12px"></el-input>
-        <el-button style="margin-top: 12px" size="small" @click.native="searchName">
+        <el-button size="small" style="position:absolute;right: 14%;margin-top: 13px" @click.native="searchName">
           Search
         </el-button>
       </el-menu>
 <!--    </el-header>-->
     <el-container>
       <el-main>
-        <span style="color: black;padding-top: 15px;font-size: 15px;font-weight: bold">筛选条件:<span v-html="'\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'"></span></span>
-<!--        <span style="font-size: 10px;font-weight: bold">数量:</span>-->
-<!--        <el-input-number v-model="number" :min="0" prop="number" size="small"></el-input-number>-->
-<!--        <span v-html="'\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'"></span>-->
-<!--        <span style="font-size: 10px;font-weight: bold">价格区间：</span>-->
-<!--        <el-input-number v-model="lowest" :min="0" prop="lowest" size="small"></el-input-number>-->
-<!--        <span>-</span>-->
-<!--        <el-input-number v-model="highest" :min="lowest" prop="highest" size="small"></el-input-number>-->
-<!--        <span v-html="'\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'"></span>-->
-<!--        <el-button size="small" style="color: white; background-color: #2c3e50" @click.native="searchName">-->
-<!--          commit-->
-<!--        </el-button>-->
+        <span style="color: black;padding-top: 15px;font-size: 15px;font-weight: bold">Sort: <span v-html="'\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'"></span></span>
+        <el-radio-group v-model="sort">
+          <el-radio :label="1">Star</el-radio>
+          <el-radio :label="2">Fork</el-radio>
+          <el-radio :label="3">Watch</el-radio>
+          <el-radio :label="4">Issues</el-radio>
+        </el-radio-group>
+        <el-button size="small" style="color: black; background-color: #ffffff" @click.native="searchName">
+          commit
+        </el-button>
+
           <div style="position: relative;top: 20px;left:20px;">
             <el-row>
-              <el-col :span="4" v-for="(item, index) in result" :key="item.id"  :offset="1">
-                <el-card shadow="hover" style="width: 230px;height: 220px;" @click.native="checkDetails(item)">
+              <el-col :span="4" v-for="(item) in result" :key="item.id"  :offset="1">
+                <el-card shadow="hover" style="width: 250px;height: 320px;" @click.native="checkDetails(item)">
                   <div style="padding: 10px;height: 310px;">
-
-                    <div>Name: {{item.name}}</div>
+                    <div v-html="highlight(item.name)">{{item.name}}</div>
                     <br>
                     <br>
-                    <div>star: {{item.star}}</div>
+                    <div class="el-icon-star-on">Star: {{item.star}}</div>
+                    <br>
+                    <div class="el-icon-tickets">Issues: {{item.issues}}</div>
+                    <br>
+                    <div class="el-icon-position">Fork: {{item.fork}}</div>
+                    <br>
+                    <div class="el-icon-view">Watch: {{item.watch}}</div>
                   </div>
                 </el-card>
               </el-col>
@@ -94,7 +71,7 @@ import Vue from "vue";
 export default {
   data() {
     return {
-      headshot: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      sort:0,
       picture: "../assets/home.jpg",
       searchValue: '',
       address: '',
@@ -111,69 +88,45 @@ export default {
     };
   },
   created() {
-    var tag = this.$route.query.tag;
-    if (tag === '1'){
-      this.searchTag = this.$route.query.value;
-    }
-    else {
-      this.searchValue = this.$route.query.value;
-    }
+    this.sort = this.$route.query.sort;
+    this.searchValue = this.$route.query.value;
     axios.get('http://localhost:8443//projectInfo',{
       params:{
         name: this.searchValue,
-        tag: this.searchTag,
-
+        sort: this.sort
       }
     })
     .then(res =>{
       this.result = res.data;
+      // for (let i=0;i<this.result.length;i++){
+      //   if (this.result[i].name.includes(this.searchValue)){
+      //     this.result[i].name = this.result[i].name.replace(this.searchValue, '<span style="color:red; font-weight: bold">'+ this.searchValue +'</span>')
+      //   }
+      // }
     })
     .catch(function (error){
       this.result = 'error'
     })
   },
   methods: {
-    exit() {
-      axios.post('/logout', {
-        username: ''
-      }).then(function (resp) {
-        alert('successful')
-      })
-      this.$router.push('/login');
-    },
-    personalHomepage() {
-      this.$router.push('/personal');
+    highlight(name){
+      let a = name.toLowerCase()
+      let b = this.searchValue.toLowerCase()
+      if (name.includes(this.searchValue)){
+        name = name.replace(this.searchValue, '<font style="color:red!important;">'+ this.searchValue +'</font>')
+      }
+      return name
     },
     searchName(){
-      this.$router.push({name: 'Result', query: {value: this.searchValue, tag: this.tag}});
+      this.$router.push({name: 'Result', query: {value: this.searchValue, sort: this.sort}});
       this.$router.go(0)
     },
     checkDetails(item){
-      this.$router.push({name: 'Detail', query: {goods_name: item.goods.goods_name, picture: item.goods.picture,
-          goods_id: item.goods.goods_id, price: item.goods.price, detail: item.goods.detail, restNumber: item.goods.rest_num, sellerID: item.goods.seller_id, comment: item.comments}})
-    },
-    querySearch(queryString, cb) {
-      var searchItems = this.searchItems;
-      var results = queryString ? searchItems.filter(this.createFilter(queryString)) : searchItems;
-      cb(results);
-    },
-    createFilter(queryString) {
-      return (searchItem) => {
-        return (searchItem.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
-      };
-    },
-    loadAll() {
-      return [
-
-      ];
-    },
-    handleSelect(item) {
-      console.log(item);
+      this.$router.push({name: 'Detail', query: {name: item.name,
+          id: item.id, star: item.star, fork: item.fork, issues: item.issues, watch: item.watch, url:item.url}})
     },
   },
-  mounted() {
-    this.searchItems = this.loadAll();
-  }
+
 }
 </script>
 
