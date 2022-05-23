@@ -1,27 +1,27 @@
 
 <template>
   <el-container>
-<!--    <el-header height="63px">-->
-      <el-menu
-        :default-active="$route.path"
-        router
-        mode="horizontal"
-        background-color="#1F2D3D"
-        text-color="white"
-        active-text-color="red"
-        style="min-width: 1200px">
-        <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
-          {{ item.navItem }}
-        </el-menu-item>
-        <el-input v-model="searchValue" placeholder="Key"
-                  suffix-icon="el-icon-search"
-                  size="medium"
-                  style="width: 300px;position:absolute;right: 20%;margin-top: 12px"></el-input>
-        <el-button size="small" style="position:absolute;right: 14%;margin-top: 13px" @click.native="searchName">
-          Search
-        </el-button>
-      </el-menu>
-<!--    </el-header>-->
+    <!--    <el-header height="63px">-->
+    <el-menu
+      :default-active="$route.path"
+      router
+      mode="horizontal"
+      background-color="#1F2D3D"
+      text-color="white"
+      active-text-color="red"
+      style="min-width: 1200px">
+      <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
+        {{ item.navItem }}
+      </el-menu-item>
+      <el-input v-model="searchValue" placeholder="Key"
+                suffix-icon="el-icon-search"
+                size="medium"
+                style="width: 300px;position:absolute;right: 20%;margin-top: 12px"></el-input>
+      <el-button size="small" style="position:absolute;right: 14%;margin-top: 13px" @click.native="searchName">
+        Search
+      </el-button>
+    </el-menu>
+    <!--    </el-header>-->
     <el-container>
       <el-main>
         <span style="color: black;padding-top: 15px;font-size: 15px;font-weight: bold">Sort: <span v-html="'\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'"></span></span>
@@ -35,26 +35,26 @@
           commit
         </el-button>
 
-          <div style="position: relative;top: 20px;left:20px;">
-            <el-row>
-              <el-col :span="4" v-for="(item) in result" :key="item.id"  :offset="1">
-                <el-card shadow="hover" style="width: 250px;height: 320px;" @click.native="checkDetails(item)">
-                  <div style="padding: 10px;height: 310px;">
-                    <div v-html="highlight(item.name)">{{item.name}}</div>
-                    <br>
-                    <br>
-                    <div class="el-icon-star-on">Star: {{item.star}}</div>
-                    <br>
-                    <div class="el-icon-tickets">Issues: {{item.issues}}</div>
-                    <br>
-                    <div class="el-icon-position">Fork: {{item.fork}}</div>
-                    <br>
-                    <div class="el-icon-view">Watch: {{item.watch}}</div>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-           </div>
+        <div style="position: relative;top: 20px;left:20px;">
+          <el-row>
+            <el-col :span="4" v-for="(item) in result" :key="item.id"  :offset="1">
+              <el-card shadow="hover" style="width: 250px;height: 320px;" @click.native="checkDetails(item)">
+                <div style="padding: 10px;height: 310px;">
+                  <div v-html="highlight(item.name)">{{item.name}}</div>
+                  <br>
+                  <br>
+                  <div class="el-icon-star-on">Star: {{item.star}}</div>
+                  <br>
+                  <div class="el-icon-tickets">Issues: {{item.issues}}</div>
+                  <br>
+                  <div class="el-icon-position">Fork: {{item.fork}}</div>
+                  <br>
+                  <div class="el-icon-view">Watch: {{item.watch}}</div>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
       </el-main>
     </el-container>
     <el-footer>
@@ -80,8 +80,7 @@ export default {
       number: 1,
       p2: 'http://p.moimg.net/project/project_20180502_1525258786_7271.jpg?imageMogr2/auto-orient/strip',
       navList: [
-        {name: '/home', navItem: 'Home'},
-        {name: '/collection', navItem: 'Collection'},
+        {name: '/home', navItem: 'Home'}
       ],
       result: 'cnmd',
       searchTag:''
@@ -96,17 +95,17 @@ export default {
         sort: this.sort
       }
     })
-    .then(res =>{
-      this.result = res.data;
-      // for (let i=0;i<this.result.length;i++){
-      //   if (this.result[i].name.includes(this.searchValue)){
-      //     this.result[i].name = this.result[i].name.replace(this.searchValue, '<span style="color:red; font-weight: bold">'+ this.searchValue +'</span>')
-      //   }
-      // }
-    })
-    .catch(function (error){
-      this.result = 'error'
-    })
+      .then(res =>{
+        this.result = res.data;
+        // for (let i=0;i<this.result.length;i++){
+        //   if (this.result[i].name.includes(this.searchValue)){
+        //     this.result[i].name = this.result[i].name.replace(this.searchValue, '<span style="color:red; font-weight: bold">'+ this.searchValue +'</span>')
+        //   }
+        // }
+      })
+      .catch(function (error){
+        this.result = 'error'
+      })
   },
   methods: {
     highlight(name){
