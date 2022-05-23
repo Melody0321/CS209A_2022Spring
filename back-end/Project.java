@@ -42,6 +42,7 @@ public class Project {
     public String getUrl() {
         return url;
     }
+    public int getID(){ return (int) id; }
 
     public String getName() {
         return name;
