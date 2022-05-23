@@ -40,13 +40,38 @@
         </el-menu>
       </el-aside>
       <el-main>
-                <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">
-                </el-image>
+<!--                <el-image :src="localImage" style="height: 380px; width: 900px; position: relative;padding-left: 10px">-->
+<!--                </el-image>-->
 
         <div>
-          <el-button @click="drawChart">Star</el-button>
+<!--          <el-tabs v-model="activeName">-->
+<!--            <el-tab-pane label="Projects & Created Time" name="first" @click="drawChart">-->
+<!--              <div id="chartLineBox" style="width: 90%;height: 70vh;">-->
+<!--              </div>-->
+<!--            </el-tab-pane>-->
+<!--            <el-tab-pane label="Number of Stars" name="second">Number of Stars</el-tab-pane>-->
+<!--            <el-tab-pane label="Number of Issues" name="third">Number of Issues</el-tab-pane>-->
+<!--            <el-tab-pane label="Number of Forks" name="fourth">Number of Forks</el-tab-pane>-->
+<!--            <el-tab-pane label="Project Topics" name="fifth">Project Topics</el-tab-pane>-->
+<!--          </el-tabs>-->
+          <el-button @click="drawChart">Projects & Created Time</el-button>
+          &nbsp;&nbsp;&nbsp;
+          <el-button @click="drawStars">Number of Stars</el-button>
+          &nbsp;&nbsp;&nbsp;
+          <el-button @click="drawIssues">Number of Issues</el-button>
+          &nbsp;&nbsp;&nbsp;
+          <el-button @click="drawForks">Number of Forks</el-button>
+          &nbsp;&nbsp;&nbsp;
+          <el-button @click="drawTopics">Project Topics</el-button><!--          词云-->
+
+
+          <br>
+          <br>
           <div id="chartLineBox" style="width: 90%;height: 70vh;">
+
           </div>
+<!--          <div id="chartLineBox1" style="width: 90%;height: 70vh;">-->
+<!--            </div>-->
         </div>
 
         <!--        <div style="position: relative;font-size: 25px;font-weight: bold;top: 10px">Recommend project：</div>-->
@@ -82,6 +107,7 @@ export default {
   name: 'home',
   data() {
     return {
+      activeName:'first',
       starVisible: false,
       localImage: require("../assets/home.jpg"),
       searchValue: '',
@@ -116,9 +142,229 @@ export default {
   },
 
   methods: {
+    drawForks() {
+      this.chartLine = echarts.init(document.getElementById('chartLineBox'));
+      this.chartLine.clear()
+
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {              //设置tip提示
+          trigger: 'axis'
+        },
+
+        legend: {               //设置区分（哪条线属于什么）
+          data: ['Forks', '# of Projects']
+        },
+        color: ['blue', '#FA6F53'],       //设置区分（每条线是什么颜色，和 legend 一一对应）
+        xAxis: {                //设置x轴
+          type: 'category',
+          boundaryGap: false,     //坐标轴两边不留白
+          data: ['<10', '10-20', '20-50', '50-100', '100-200', '200-500',  '>=500'],
+          name: 'Issues',           //X轴 name
+          nameTextStyle: {        //坐标轴名称的文字样式
+            color: 'black',
+            fontSize: 16,
+            padding: [0, 0, 0, 20]
+          },
+          axisLine: {             //坐标轴轴线相关设置。
+            lineStyle: {
+              color: 'black',
+            }
+          }
+        },
+        yAxis: {
+          name: '# of Projects',
+          nameTextStyle: {
+            color: 'black',
+            fontSize: 16,
+            padding: [0, 0, 10, 0]
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'black',
+            }
+          },
+          type: 'value'
+        },
+        series: [
+
+
+          {
+            name: '# of Projects',
+            data: [243,///<10
+              137,///10-20
+              216,///20-50
+              154,///50-100
+              131,
+              91,///200-500
+              48],
+            type: 'line',
+            lineStyle: {
+              normal: {
+                color: 'blue',
+              }
+            },
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+
+      this.chartLine.setOption(option)
+    },
+    drawIssues() {
+      this.chartLine = echarts.init(document.getElementById('chartLineBox'));
+      this.chartLine.clear()
+
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {              //设置tip提示
+          trigger: 'axis'
+        },
+
+        legend: {               //设置区分（哪条线属于什么）
+          data: ['Issues', '# of Projects']
+        },
+        color: ['blue', '#FA6F53'],       //设置区分（每条线是什么颜色，和 legend 一一对应）
+        xAxis: {                //设置x轴
+          type: 'category',
+          boundaryGap: false,     //坐标轴两边不留白
+          data: ['<10', '10-20', '20-50', '50-100', '100-200', '200-500',  '>=500'],
+          name: 'Issues',           //X轴 name
+          nameTextStyle: {        //坐标轴名称的文字样式
+            color: 'black',
+            fontSize: 16,
+            padding: [0, 0, 0, 20]
+          },
+          axisLine: {             //坐标轴轴线相关设置。
+            lineStyle: {
+              color: 'black',
+            }
+          }
+        },
+        yAxis: {
+          name: '# of Projects',
+          nameTextStyle: {
+            color: 'black',
+            fontSize: 16,
+            padding: [0, 0, 10, 0]
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'black',
+            }
+          },
+          type: 'value'
+        },
+        series: [
+
+
+          {
+            name: '# of Projects',
+            data: [243,///<10
+              137,///10-20
+              216,///20-50
+              154,///50-100
+              131,
+              91,///200-500
+              48],
+            type: 'line',
+            lineStyle: {
+              normal: {
+                color: 'blue',
+              }
+            },
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+
+      this.chartLine.setOption(option)
+    },
+    drawStars(){
+      this.chartLine = echarts.init(document.getElementById('chartLineBox'));
+
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {              //设置tip提示
+          trigger: 'axis'
+        },
+
+        legend: {               //设置区分（哪条线属于什么）
+          data: ['# of Projects']
+        },
+        color: ['blue', '#FA6F53'],       //设置区分（每条线是什么颜色，和 legend 一一对应）
+        xAxis: {                //设置x轴
+          type: 'category',
+          boundaryGap: false,     //坐标轴两边不留白
+          data: ['0-1000', '1000-2000', '2000-3000','3000-4000','4000-5000','5000-6000','6000-7000','7000-8000','8000-9000','9000-10000','>=10000'],
+          name: 'Star',           //X轴 name
+          nameTextStyle: {        //坐标轴名称的文字样式
+            color: 'black',
+            fontSize: 16,
+          },
+          axisLine: {             //坐标轴轴线相关设置。
+            lineStyle: {
+              color: 'black',
+            }
+          }
+        },
+        yAxis: {
+          name: '# of Projects',
+          nameTextStyle: {
+            color: 'black',
+            fontSize: 16,
+            // padding: [0, 0, 10, 0]
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'black',
+            }
+          },
+          type: 'value'
+        },
+        series: [
+          {
+            name: '# of projects',
+            data: [415,
+              264,
+              123,
+              68,
+              38,
+              34,
+              10,
+              11,
+              11,
+              7,
+              39],
+
+            type: 'line',               // 类型为折线图
+            lineStyle: {                // 线条样式 => 必须使用normal属性
+              normal: {
+                color: 'blue',
+              }
+            },
+          },
+          {
+            name: 'Total number',
+            data: [],
+            type: 'line',
+            lineStyle: {
+              normal: {
+                color: '#FA6F53',
+              }
+            },
+          }
+        ]
+      }
+      // 使用刚指定的配置项和数据显示图表。
+      this.chartLine.setOption(option)
+    },
     drawChart() {
       this.starVisible = true;
       this.chartLine = echarts.init(document.getElementById('chartLineBox'));
+      this.chartLine.clear()
 
       // 指定图表的配置项和数据
       var option = {
@@ -212,6 +458,7 @@ export default {
       }
 
       // 使用刚指定的配置项和数据显示图表。
+
       this.chartLine.setOption(option)
     },
     checkDetails(item) {
