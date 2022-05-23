@@ -3,64 +3,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+
 @Entity
-@Table(name = "project")
+@Table(name = "project_time")
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
-public class Project {
+public class Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "project_id")
     private long id;
     @NotNull
-    private String name;
+    private Timestamp create_time;
     @NotNull
-    private String url;
-    @NotNull
-    private int star = 0;
-    @NotNull
-    private int issues = 0;
-    @NotNull
-    private int watch = 0;
-    @NotNull
-    private int fork = 0;
-
-    public Project(){
+    private Timestamp update_time;
+    public Time(){
 
     }
     @Override
     public String toString(){
-        return "Project{" +
+        return "Time{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", star=" + star +
-                ", issues=" + issues +
-                ", watch=" + watch +
-                ", fork=" + fork +
+                ", create_time='" + create_time.toString().substring(0,11) + '\'' +
+                ", update_time='" + update_time.toString().substring(0,11) + '\'' +
                 '}';
     }
-    public String getUrl() {
-        return url;
-    }
-    public int getID(){ return (int) id; }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getWatch() {
-        return watch;
-    }
-
-    public int getStar() {
-        return star;
-    }
-
-    public int getFork() {
-        return fork;
-    }
-
-    public int getIssues() {
-        return issues;
-    }
+    public String getCreate_time(){ return create_time.toString().substring(0,11);}
+    public String getUpdate_time(){ return update_time.toString().substring(0,11);}
 }
