@@ -28,9 +28,9 @@
           <div style="position: absolute;padding-top: 440px;left: 20%;font-weight: bold;font-size: 20px; text-align: left">Last Modified Time: {{timeList[0].update_time}}</div>
           <div style="position: absolute;padding-top: 500px;left: 20%;font-weight: bold;font-size: 20px; text-align: left">
             <el-tag
-            :key="t"
-            v-for="t in tagList"
-            size="medium"
+              :key="t"
+              v-for="t in tagList"
+              size="medium"
             >
               {{t.topic}}
             </el-tag>
@@ -72,8 +72,7 @@ export default {
       password:'',
       passwordVisible:false,
       navList: [
-        {name: '/home', navItem: 'Home'},
-        {name: '/collection', navItem: 'Collection'},
+        {name: '/home', navItem: 'Home'}
       ],
       picture: '',
       price: 0,
@@ -104,7 +103,7 @@ export default {
         color: ['#66FF99'],
       },
       chart: null
-  };
+    };
   },
   created() {
     this.name = this.$route.query.name
