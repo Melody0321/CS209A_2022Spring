@@ -1,44 +1,42 @@
-
 <template>
-  <el-container>
-    <el-header height="63px">
-      <el-menu
-        :default-active="$route.path"
-        router
-        mode="horizontal"
-        background-color="#1F2D3D"
-        text-color="white"
-        active-text-color="red"
-        style="min-width: 1200px">
-        <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
-          {{ item.navItem }}
-        </el-menu-item>
-        <span style="color: white; position: absolute;padding-top: 16px;right: 50%;font-size: 25px;font-weight: bold">SUSTech - Github</span>
-        <el-input v-model="searchValue" placeholder="Key"
-                  suffix-icon="el-icon-search"
-                  size="medium"
-                  style="width: 300px;position:absolute;right: 20%;margin-top: 12px"></el-input>
+  <div>
+    <el-menu
+      :default-active="$route.path"
+      router
+      mode="horizontal"
+      background-color="#1F2D3D"
+      text-color="white"
+      active-text-color="red"
+      style="min-width: 1200px">
+      <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
+        {{ item.navItem }}
+      </el-menu-item>
+      <span style="color: white; position: absolute;padding-top: 16px;right: 50%;font-size: 25px;font-weight: bold">SUSTech - Github</span>
+      <el-input v-model="searchValue" placeholder="Key"
+                suffix-icon="el-icon-search"
+                size="medium"
+                style="width: 300px;position:absolute;right: 20%;margin-top: 12px"></el-input>
 
-        <el-button size="small" style="position:absolute;right: 14%;margin-top: 13px" @click.native="searchName">
-          Search
-        </el-button>
+      <el-button size="small" style="position:absolute;right: 14%;margin-top: 13px" @click.native="searchName">
+        Search
+      </el-button>
 
-      </el-menu>
-
-    </el-header>
+    </el-menu>
     <el-container>
-      <el-aside width="150px"><el-menu
-        :default-active="$route.path"
-        router
-        background-color="white"
-        text-color="#222"
-        active-text-color="red">
-        <br>
-        <br>
-        <el-menu-item @click.native="searchTag(item)" v-for="(item,i) in tagList" :key="i" >
-          {{ item.tagItem }}
-        </el-menu-item>
-      </el-menu></el-aside>
+      <el-aside width="150px">
+        <el-menu
+          :default-active="$route.path"
+          router
+          background-color="white"
+          text-color="#222"
+          active-text-color="red">
+          <br>
+          <br>
+          <el-menu-item @click.native="searchTag(item)" v-for="(item,i) in tagList" :key="i">
+            {{ item.tagItem }}
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
       <el-main>
         <div>
           <el-button @click="drawChart">Projects & Created Time</el-button>
@@ -55,12 +53,12 @@
           <br>
           <div id="chartLineBox" style="width: 90%;height: 70vh;">
           </div>
-            <div id="mywordcloud" :style="{width: '100%', height: '300px'}"></div>
+          <div id="mywordcloud" :style="{width: '100%', height: '300px'}"></div>
         </div>
       </el-main>
 
     </el-container>
-  </el-container>
+  </div>
 </template>
 
 
@@ -76,8 +74,8 @@ export default {
   name: 'home',
   data() {
     return {
-    chart:null,
-      worddata:[],
+      chart: null,
+      worddata: [],
       activeName: 'first',
       starVisible: false,
       localImage: require("../assets/home.jpg"),
@@ -92,28 +90,28 @@ export default {
       searchItems: [],
       state2: '',
       recommend: [],
-      tagList:[
-        {url: '/result', tagItem:'Android', value:'android'},
-        {url: '/result', tagItem:'Spring-boot', value:'spring-boot'},
-        {url: '/result', tagItem:'Spring', value:'spring'},
-        {url: '/result', tagItem:'Hacktoberfest', value:'hacktoberfest'},
-        {url: '/result', tagItem:'Kotlin', value:'kotlin'},
-        {url: '/result', tagItem:'Android-library', value: 'android-library'},
-        {url: '/result', tagItem:'Database', value: 'database'},
-        {url: '/result', tagItem:'Javascript', value: 'javascript'},
-        {url: '/result', tagItem:'Mysql', value: 'mysql'}
+      tagList: [
+        {url: '/result', tagItem: 'Android', value: 'android'},
+        {url: '/result', tagItem: 'Spring-boot', value: 'spring-boot'},
+        {url: '/result', tagItem: 'Spring', value: 'spring'},
+        {url: '/result', tagItem: 'Hacktoberfest', value: 'hacktoberfest'},
+        {url: '/result', tagItem: 'Kotlin', value: 'kotlin'},
+        {url: '/result', tagItem: 'Android-library', value: 'android-library'},
+        {url: '/result', tagItem: 'Database', value: 'database'},
+        {url: '/result', tagItem: 'Javascript', value: 'javascript'},
+        {url: '/result', tagItem: 'Mysql', value: 'mysql'}
       ]
     };
   },
   created() {
 
-    axios.get('http://localhost:8443/projectTop8').then(res =>{
+    axios.get('http://localhost:8443/projectTop8').then(res => {
       this.recommend = res.data;
     })
   },
   methods: {
-  drawTopics(){
-      var worddata=JSON.parse(JSON.stringify(data))
+    drawTopics() {
+      var worddata = JSON.parse(JSON.stringify(data))
       // this.$axios.get('../assets/data.json').then(res=>{
       //   console.log(res)
       //   worddata=res.data
@@ -122,7 +120,7 @@ export default {
       // )
       console.log(worddata);
       this.chart = echarts.init(document.getElementById("mywordcloud"));
-      const option={
+      const option = {
         series: [
           {
             type: "wordCloud",
@@ -141,7 +139,7 @@ export default {
             // maskImage: maskImage,
             textStyle: {
               normal: {
-                color: function() {
+                color: function () {
                   return (
                     "rgb(" +
                     Math.round(Math.random() * 255) +
@@ -496,9 +494,20 @@ export default {
 
       this.chartLine.setOption(option)
     },
-    checkDetails(item){
-      this.$router.push({name: 'Detail', query: {goods_name: item.goods.goods_name, picture: item.goods.picture,
-          goods_id: item.goods.goods_id, price: item.goods.price, detail: item.goods.detail, restNumber: item.goods.rest_num, sellerID: item.goods.seller_id, comment: item.comments, imgList:item.imgs}})
+    checkDetails(item) {
+      this.$router.push({
+        name: 'Detail', query: {
+          goods_name: item.goods.goods_name,
+          picture: item.goods.picture,
+          goods_id: item.goods.goods_id,
+          price: item.goods.price,
+          detail: item.goods.detail,
+          restNumber: item.goods.rest_num,
+          sellerID: item.goods.seller_id,
+          comment: item.comments,
+          imgList: item.imgs
+        }
+      })
     },
     exit() {
       axios.post('/logout', {
@@ -522,13 +531,12 @@ export default {
       };
     },
     loadAll() {
-      return [
-      ];
+      return [];
     },
-    searchTag(item){
+    searchTag(item) {
       this.$router.push({path: '/result', query: {value: item.value, sort: 0}});
     },
-    searchName(){
+    searchName() {
       this.$router.push({path: '/result', query: {value: this.searchValue, sort: 0}});
     }
   },
@@ -540,13 +548,14 @@ export default {
 
 
 <style scoped>
-a{
+a {
   text-decoration: none;
 }
 
 span {
   pointer-events: none;
 }
+
 .i {
   float: right;
 }
