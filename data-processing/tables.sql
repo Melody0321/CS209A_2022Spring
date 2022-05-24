@@ -17,6 +17,7 @@ create table project_time(
 );
 
 create table project_topic(
+    id     serial primary key,
     project_id int not null ,
     topic varchar not null ,
     foreign key (project_id)references project(id)
